@@ -11,11 +11,12 @@ class Box {
         this.over = false
         this.element = document.getElementById(this.id)
         this.element.addEventListener("click", function clicked() {
+            if (self.element.innerText !== '') return null
+            self.element.removeEventListener('click', clicked)
             let board = Array.from(boxes).map(box => box.innerText)
             board.filter(value => value === 'X').length > board.filter(value => value === 'O').length ? self.addO() : self.addX()
-            self.element.removeEventListener('click', clicked)
             if (!self.twoPlayers && !self.over) {
-                setTimeout(self.computerTurn, 500)
+                setTimeout(self.computerTurn, 300)
             }
             if (self.over) {
                 console.log('over!')
@@ -59,8 +60,8 @@ class Box {
     computerTurn(){
         let choices = Array.from(boxes).filter(bx => bx.innerText === '')
         let random = Math.floor(choices.length * Math.random())
-        console.log(choices)
         choices[random].innerText = 'O'
+        console.log(choices[random].id)
     }
 }
 
