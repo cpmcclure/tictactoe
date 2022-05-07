@@ -12,16 +12,14 @@ class Box {
         this.element = document.getElementById(this.id)
         this.element.addEventListener("click", function clicked() {
             if (self.element.innerText !== '') return null
+            if (self.over) return null
             self.element.removeEventListener('click', clicked)
             let board = Array.from(boxes).map(box => box.innerText)
             board.filter(value => value === 'X').length > board.filter(value => value === 'O').length ? self.addO() : self.addX()
             if (!self.twoPlayers && !self.over) {
                 setTimeout(self.computerTurn, 300)
             }
-            if (self.over) {
-                console.log('over!')
-                Array.from(boxes).forEach(bx => document.getElementById(bx.id).removeEventListener('click', clicked))
-            }
+            console.log(self.over)
         })
     }
     checkWin(player){
@@ -36,6 +34,7 @@ class Box {
         console.log(spaces)
         if (wins.some(win => win.every(num => spaces.includes(num)))) {
             this.over = true
+            fullBoard.forEach(box => box.over = true)
             alert(`${player} wins!`)
         }
         else if(spaces.length >= 5) {
